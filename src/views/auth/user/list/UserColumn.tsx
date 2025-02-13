@@ -5,10 +5,10 @@ import { createColumnHelper, type ColumnDef } from '@tanstack/react-table'
 
 import { Checkbox, Typography, Chip, IconButton } from '@mui/material'
 
-// import type { Locale } from '@configs/i18n'
+import type { Locale } from '@configs/i18n'
 
 
-// import { getLocalizedUrl } from '@/utils/i18n'
+import { getLocalizedUrl } from '@/utils/i18n'
 
 
 import { getInitials } from '@/utils/getInitials'

@@ -1,4 +1,6 @@
 // MUI Imports
+import { useParams } from 'next/navigation'
+
 import { useTheme } from '@mui/material/styles'
 
 // Third-party Imports
@@ -9,7 +11,7 @@ import type { getDictionary } from '@/utils/getDictionary'
 import type { VerticalMenuContextProps } from '@menu/components/vertical-menu/Menu'
 
 // Component Imports
-import { Menu, MenuItem } from '@menu/vertical-menu'
+import { Menu, MenuItem, SubMenu } from '@menu/vertical-menu'
 
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
@@ -41,9 +43,11 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
   // Hooks
   const theme = useTheme()
   const verticalNavOptions = useVerticalNav()
+  const params = useParams()
 
   // Vars
   const { isBreakpointReached, transitionDuration } = verticalNavOptions
+  const { lang: locale } = params
 
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
 
@@ -76,7 +80,20 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
         <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>
           About
         </MenuItem>
+
+
+        <SubMenu label={dictionary['navigation'].user} icon={<i className='tabler-user' />}>
+          <MenuItem href={`/${locale}/apps/user/list`}>{dictionary['navigation'].list}</MenuItem>
+          <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem>
+        </SubMenu>
+
+
       </Menu>
+
+
+
+
+
       {/* <Menu
         popoutMenuOffset={{ mainAxis: 23 }}
         menuItemStyles={menuItemStyles(verticalNavOptions, theme)}
@@ -86,7 +103,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
       >
         <GenerateVerticalMenu menuData={menuData(dictionary)} />
       </Menu> */}
-    </ScrollWrapper>
+    </ScrollWrapper >
   )
 }
 
