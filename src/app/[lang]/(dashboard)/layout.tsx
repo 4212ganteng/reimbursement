@@ -20,10 +20,16 @@ import ScrollToTop from '@core/components/scroll-to-top'
 
 // Util Imports
 import { getMode, getSystemMode } from '@core/utils/serverHelpers'
+import { getDictionary } from '@/utils/getDictionary'
+import type { Locale } from '@/configs/i18n'
 
-const Layout = async ({ children }: ChildrenType) => {
+const Layout = async (props: ChildrenType & { params: Promise<{ lang: Locale }> }) => {
+  const params = await props.params
+  const { children } = props
+
   // Vars
   const direction = 'ltr'
+  const dictionary = await getDictionary(params.lang)
   const mode = getMode()
   const systemMode = getSystemMode()
 
@@ -33,7 +39,7 @@ const Layout = async ({ children }: ChildrenType) => {
         systemMode={systemMode}
         verticalLayout={
           <VerticalLayout
-            navigation={<Navigation mode={mode} systemMode={systemMode} />}
+            navigation={<Navigation dictionary={dictionary} mode={mode} systemMode={systemMode} />}
             navbar={<Navbar />}
             footer={<VerticalFooter />}
           >
@@ -41,7 +47,7 @@ const Layout = async ({ children }: ChildrenType) => {
           </VerticalLayout>
         }
         horizontalLayout={
-          <HorizontalLayout header={<Header />} footer={<HorizontalFooter />}>
+          <HorizontalLayout header={<Header dictionary={dictionary} />} footer={<HorizontalFooter />}>
             {children}
           </HorizontalLayout>
         }

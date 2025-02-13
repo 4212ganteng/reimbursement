@@ -1,19 +1,19 @@
-// ProductTable.tsx
+// UserTable.tsx
 import { useState } from 'react'
 
 import { useReactTable, getCoreRowModel, getFilteredRowModel, getSortedRowModel, getPaginationRowModel, getFacetedRowModel, getFacetedUniqueValues, getFacetedMinMaxValues } from '@tanstack/react-table'
 
-import { productColumns } from './ProductColumn'
-import type { ProductRes } from '@/types/apps/productTypes'
+import { userColumns } from './UserColumns'
+import type { UsersTypeWithAction } from '@/types/apps/userTypes'
 import { fuzzyFilter } from './fuzzyFilter'
 
-export const useProductTable = (data: ProductRes[]) => {
+export const useUserTable = (data: UsersTypeWithAction[], locale: Locale) => {
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
     data,
-    columns: productColumns,
+    columns: userColumns(locale),
     filterFns: {
       fuzzy: fuzzyFilter
     },

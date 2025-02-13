@@ -11,6 +11,8 @@ import { styled, useColorScheme, useTheme } from '@mui/material/styles'
 
 // Type Imports
 import type { Mode, SystemMode } from '@core/types'
+import type { getDictionary } from '@/utils/getDictionary'
+
 
 // Component Imports
 import VerticalNav, { NavHeader, NavCollapseIcons } from '@menu/vertical-menu'
@@ -25,6 +27,7 @@ import { useSettings } from '@core/hooks/useSettings'
 import navigationCustomStyles from '@core/styles/vertical/navigationCustomStyles'
 
 type Props = {
+  dictionary: Awaited<ReturnType<typeof getDictionary>>
   mode: Mode
   systemMode: SystemMode
 }
@@ -39,9 +42,8 @@ const StyledBoxForShadow = styled('div')(({ theme }) => ({
   width: 'calc(100% + 15px)',
   height: theme.mixins.toolbar.minHeight,
   transition: 'opacity .15s ease-in-out',
-  background: `linear-gradient(var(--mui-palette-background-paper) ${
-    theme.direction === 'rtl' ? '95%' : '5%'
-  }, rgb(var(--mui-palette-background-paperChannel) / 0.85) 30%, rgb(var(--mui-palette-background-paperChannel) / 0.5) 65%, rgb(var(--mui-palette-background-paperChannel) / 0.3) 75%, transparent)`,
+  background: `linear-gradient(var(--mui-palette-background-paper) ${theme.direction === 'rtl' ? '95%' : '5%'
+    }, rgb(var(--mui-palette-background-paperChannel) / 0.85) 30%, rgb(var(--mui-palette-background-paperChannel) / 0.5) 65%, rgb(var(--mui-palette-background-paperChannel) / 0.3) 75%, transparent)`,
   '&.scrolled': {
     opacity: 1
   }
@@ -49,7 +51,7 @@ const StyledBoxForShadow = styled('div')(({ theme }) => ({
 
 const Navigation = (props: Props) => {
   // Props
-  const { mode, systemMode } = props
+  const { dictionary, mode, systemMode } = props
 
   // Hooks
   const verticalNavOptions = useVerticalNav()
@@ -108,8 +110,8 @@ const Navigation = (props: Props) => {
       // when semiDark is enabled and the mode or systemMode is light
       {...(isSemiDark &&
         !isDark && {
-          'data-mui-color-scheme': 'dark'
-        })}
+        'data-mui-color-scheme': 'dark'
+      })}
     >
       {/* Nav Header including Logo & nav toggle icons  */}
       <NavHeader>
@@ -126,7 +128,7 @@ const Navigation = (props: Props) => {
         )}
       </NavHeader>
       <StyledBoxForShadow ref={shadowRef} />
-      <VerticalMenu scrollMenu={scrollMenu} />
+      <VerticalMenu dictionary={dictionary} scrollMenu={scrollMenu} />
     </VerticalNav>
   )
 }
