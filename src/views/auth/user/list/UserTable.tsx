@@ -3,9 +3,15 @@ import { useState } from 'react'
 
 import { useReactTable, getCoreRowModel, getFilteredRowModel, getSortedRowModel, getPaginationRowModel, getFacetedRowModel, getFacetedUniqueValues, getFacetedMinMaxValues } from '@tanstack/react-table'
 
-import { userColumns } from './UserColumns'
-import type { UsersTypeWithAction } from '@/types/apps/userTypes'
-import { fuzzyFilter } from './fuzzyFilter'
+
+import type { Locale } from '@/configs/i18n'
+import { userColumns } from './UserColumn'
+import { fuzzyFilter } from '@/utils/FuzyFilter'
+import type { UsersType } from '@/types/userTypes'
+
+type UsersTypeWithAction = UsersType & {
+  action?: string
+}
 
 export const useUserTable = (data: UsersTypeWithAction[], locale: Locale) => {
   const [rowSelection, setRowSelection] = useState({})

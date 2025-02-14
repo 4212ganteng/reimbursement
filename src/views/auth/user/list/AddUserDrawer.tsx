@@ -13,10 +13,11 @@ import Divider from '@mui/material/Divider'
 import { useForm, Controller } from 'react-hook-form'
 
 // Types Imports
-import type { UsersType } from '@/types/apps/userTypes'
+import type { UsersType } from '@/types/userTypes'
 
 // Component Imports
 import CustomTextField from '@core/components/mui/TextField'
+import { RegisterUserAction } from '@/app/[lang]/(dashboard)/apps/(auth)/user/action'
 
 type Props = {
   open: boolean
@@ -30,7 +31,7 @@ type FormValidateType = {
   username: string
   email: string
   role: string
-  plan: string
+  password: string
   status: string
 }
 
@@ -66,7 +67,7 @@ const AddUserDrawer = (props: Props) => {
       username: '',
       email: '',
       role: '',
-      plan: '',
+      password: '',
       status: ''
     }
   })
@@ -90,7 +91,7 @@ const AddUserDrawer = (props: Props) => {
     setData([...(userData ?? []), newUser])
     handleClose()
     setFormData(initialData)
-    resetForm({ fullName: '', username: '', email: '', role: '', plan: '', status: '' })
+    resetForm({ fullName: '', username: '', email: '', role: '', password: '', status: '' })
   }
 
   const handleReset = () => {
@@ -115,7 +116,8 @@ const AddUserDrawer = (props: Props) => {
       </div>
       <Divider />
       <div>
-        <form onSubmit={handleSubmit(data => onSubmit(data))} className='flex flex-col gap-6 p-6'>
+        {/* <form  onSubmit={handleSubmit(data => onSubmit(data))} className='flex flex-col gap-6 p-6'> */}
+        <form action={RegisterUserAction} className='flex flex-col gap-6 p-6'>
           <Controller
             name='fullName'
             control={control}
@@ -140,6 +142,20 @@ const AddUserDrawer = (props: Props) => {
                 fullWidth
                 label='Username'
                 placeholder='johndoe'
+                {...(errors.username && { error: true, helperText: 'This field is required.' })}
+              />
+            )}
+          />
+          <Controller
+            name='password'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <CustomTextField
+                {...field}
+                fullWidth
+                label='Password'
+                placeholder='input password'
                 {...(errors.username && { error: true, helperText: 'This field is required.' })}
               />
             )}
@@ -180,27 +196,7 @@ const AddUserDrawer = (props: Props) => {
               </CustomTextField>
             )}
           />
-          <Controller
-            name='plan'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField
-                select
-                fullWidth
-                id='select-plan'
-                label='Select Plan'
-                {...field}
-                inputProps={{ placeholder: 'Select Plan' }}
-                {...(errors.plan && { error: true, helperText: 'This field is required.' })}
-              >
-                <MenuItem value='basic'>Basic</MenuItem>
-                <MenuItem value='company'>Company</MenuItem>
-                <MenuItem value='enterprise'>Enterprise</MenuItem>
-                <MenuItem value='team'>Team</MenuItem>
-              </CustomTextField>
-            )}
-          />
+
           <Controller
             name='status'
             control={control}
@@ -220,27 +216,8 @@ const AddUserDrawer = (props: Props) => {
               </CustomTextField>
             )}
           />
-          <CustomTextField
-            label='Company'
-            fullWidth
-            placeholder='Company PVT LTD'
-            value={formData.company}
-            onChange={e => setFormData({ ...formData, company: e.target.value })}
-          />
-          <CustomTextField
-            select
-            fullWidth
-            id='country'
-            value={formData.country}
-            onChange={e => setFormData({ ...formData, country: e.target.value })}
-            label='Select Country'
-            inputProps={{ placeholder: 'Country' }}
-          >
-            <MenuItem value='India'>India</MenuItem>
-            <MenuItem value='USA'>USA</MenuItem>
-            <MenuItem value='Australia'>Australia</MenuItem>
-            <MenuItem value='Germany'>Germany</MenuItem>
-          </CustomTextField>
+
+
           <CustomTextField
             label='Contact'
             type='number'

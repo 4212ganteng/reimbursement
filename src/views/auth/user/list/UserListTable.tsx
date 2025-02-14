@@ -1,18 +1,36 @@
+"use client"
+
+
+
 // UserListTable.tsx
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useParams } from 'next/navigation'
 
-import { Card, CardHeader, Button, Typography, MenuItem, IconButton } from '@mui/material'
+import { Button, Card, CardHeader, MenuItem, TablePagination } from '@mui/material'
 
-import type { UsersTypeWithAction } from '@/types/apps/userTypes'
-import { useUserTable } from './UserTable'
-import { DebouncedInput } from './DebouncedInput'
-import { TablePaginationComponent } from '@components/TablePaginationComponent'
+// Third-party Imports
+import {
+  flexRender
+} from '@tanstack/react-table'
+
+import classnames from 'classnames'
+
+
 import CustomTextField from '@core/components/mui/TextField'
 import tableStyles from '@core/styles/table.module.css'
-import { AddUserDrawer } from './AddUserDrawer'
-import { TableFilters } from './TableFilters'
+
+// import { TableFilters } from './TableFilters'
+import { useUserTable } from './UserTable'
+import type { UsersType } from '@/types/userTypes'
+import TablePaginationComponent from '@/components/TablePaginationComponent'
+import type { Locale } from '@/configs/i18n'
+import { DebouncedInput } from '@/utils/DebouncedInput'
+import AddUserDrawer from './AddUserDrawer'
+
+type UsersTypeWithAction = UsersType & {
+  action?: string
+}
 
 const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => {
   const [addUserOpen, setAddUserOpen] = useState(false)
@@ -25,7 +43,7 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
     <>
       <Card>
         <CardHeader title='Filters' className='pbe-4' />
-        <TableFilters setData={setFilteredData} tableData={data} />
+        {/* <TableFilters setData={setFilteredData} tableData={data} /> */}
         <div className='flex justify-between flex-col items-start md:flex-row md:items-center p-6 border-bs gap-4'>
           <CustomTextField
             select
@@ -129,7 +147,8 @@ const UserListTable = ({ tableData }: { tableData?: UsersTypeWithAction[] }) => 
         open={addUserOpen}
         handleClose={() => setAddUserOpen(!addUserOpen)}
         userData={data}
-        setData={setData}
+        onDataSubmit={() => { }}
+
       />
     </>
   )
